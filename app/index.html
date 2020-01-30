@@ -1,0 +1,129 @@
+<!--
+Alex Arnell
+01/21/2020
+HTML Page for Database 
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        #container {
+            text-align: center
+        }
+
+        #connection {
+            text-align: center
+        }
+
+        body {
+            background-color: black;
+            color: white
+        }
+
+        p {
+            font-family: "Courier New"
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <h1><b> - Enter Valid Credentials To Access CyberRange Database - </b></h1>
+        <label><b> Username </b></label>
+        <input type="text" placeholder="Enter Username" id="username">
+
+        <label><b> Password </b></label>
+        <input type="text" placeholder="Enter Password" id="password">
+
+        <button id="submitLogin">Enter Credentials</button>
+    </div>
+
+    <div id="connection">
+
+    </div>
+
+    <div id="command">
+
+    </div>
+
+    <script>
+        let login = false
+
+        //creating the input command field (called when submit button is clicked)
+        function createCommandDiv(div) {
+            label = document.createElement("label")
+            label.innerHTML = " >> "
+            document.getElementById(div).appendChild(label)
+
+            text = document.createElement("input")
+            text.setAttribute('id', 'text')
+            text.setAttribute('onfocus', 'this.value=""')
+            text.setAttribute('size', '40')
+            document.getElementById(div).appendChild(text)
+
+            cmdButton = document.createElement("button")
+            cmdButton.setAttribute('id', 'cmdButton')
+            // document.getElementById("cmdButton").style.background = "none"
+            // document.getElementById("cmdButton").style.border = "none"
+            document.getElementById(div).appendChild(cmdButton)
+
+            //Query fetch by enter key on input
+            document.getElementById("text").addEventListener("keyup", function (event) {
+                if (event.keyCode === 13) {
+                    document.getElementById("cmdButton").click();
+                }
+            });
+
+            //Query fetch and returning results as paragraphs into command div
+            document.getElementById("cmdButton").addEventListener("click", function () {
+                command = document.getElementById("text").value
+                fetch("/command", {
+                    body: JSON.stringify({
+                        cmd: command
+                    }),
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                })
+                    .then(res => {
+                        return res.text()
+                    })
+                    .then(data => {
+                        let para = document.createElement("P")
+                        let para2 = document.createElement("P")
+                        para.innerHTML = data
+                        para2.innerHTML = "COMMAND: " + command
+                        document.getElementById("command").appendChild(para2)
+                        document.getElementById("command").appendChild(para)
+                    });
+            });
+        }
+
+        //Login as well as Database server launch
+        document.getElementById("submitLogin").addEventListener("click", function () {
+            if (login == false) {
+                username = document.getElementById("username").value
+                password = document.getElementById("password").value
+                fetch("/login", {
+                    body: JSON.stringify({
+                        user: username,
+                        pass: password
+                    }),
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                })
+                    .then(res => {
+                        return res.text()
+                    })
+                    .then(data => {
+                        document.getElementById("connection").innerHTML = data
+                    });
+                createCommandDiv("command")
+                login = true
+            }
+        })
+    </script>
+</body>

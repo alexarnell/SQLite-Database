@@ -1,0 +1,17 @@
+{
+    "name": "database-package",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "main": "index.js",
+    "dependencies": {
+        "express": "^4.17.1",
+        "prompt-sync": "^4.2.0",
+        "sqlite3": "^4.1.1"
+    },
+    "devDependencies": {},
+    "author": "",
+    "license": "ISC",
+    "description": ""
+}
