@@ -49,18 +49,22 @@ app.post('/login', function (req, res) {
 })
 
 
-app.post('/command', function (req, res) {
+app.post('/command', async (req, res) => {
     console.log("Command post request complete")
     command = req.body.cmd
+    let c = command.split(";")
+    let result = []
     if (ifAdmin(username, password)) {
         if (command.toUpperCase().startsWith("SELECT")) {
-            query(command).then((data) => {
-                console.log("Sucessful Query")
-                res.send(data)
-            }).catch((data) => {
-                console.log("Unsucessful Query")
-                res.send(data)
-            })
+
+            for (let item of c) {
+                let data = await query(item)
+                result = result.concat(data)
+            }
+            console.log(result)
+            res.send(result)
+
+
         }
         else if (command.toUpperCase() == "EXIT") {
             res.send("Closing the database connection")

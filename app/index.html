@@ -81,7 +81,7 @@ HTML Page for Database
                 command = document.getElementById("text").value
                 fetch("/command", {
                     body: JSON.stringify({
-                        cmd: command
+                        cmd: `select AGENT_NAME from AGENTS where AGENT_NAME = '${command}'`
                     }),
                     method: 'POST',
                     mode: 'cors',
