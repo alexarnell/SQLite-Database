@@ -10,27 +10,48 @@ HTML Page for Database
 <head>
     <style>
         #container {
-            text-align: center
+            text-align: center;
+            padding-bottom: 25px;
         }
 
         #connection {
-            text-align: center
+            text-align: center;
+            padding-bottom: 25px;
+        }
+
+        #submitLogin {
+            border-color: green;
         }
 
         body {
             background-color: black;
-            color: white
+            color: green;
+            margin-top: 50;
         }
 
         p {
             font-family: "Courier New"
+        }
+
+        input {
+            background-color: black;
+            color: green;
+            border-color: green;
+        }
+
+        button {
+            background-color: black;
+            color: green;
+            outline: 0;
+            border-color: black;
+            box-shadow: black;
         }
     </style>
 </head>
 
 <body>
     <div id="container">
-        <h1><b> - Enter Valid Credentials To Access CyberRange Database - </b></h1>
+        <h1><b> - Enter Valid Credentials To Access L33K3R Database - </b></h1>
         <label><b> Username </b></label>
         <input type="text" placeholder="Enter Username" id="username">
 
@@ -81,7 +102,7 @@ HTML Page for Database
                 command = document.getElementById("text").value
                 fetch("/command", {
                     body: JSON.stringify({
-                        cmd: `select AGENT_NAME from AGENTS where AGENT_NAME = '${command}'`
+                        cmd: `select * from AGENTS where AGENT_NAME = '${command}'`
                     }),
                     method: 'POST',
                     mode: 'cors',

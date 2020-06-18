@@ -45,23 +45,24 @@ app.post('/login', function (req, res) {
     else {
         console.log("Unsucessful admin Login")
     }
-    res.send("Connected to the SQlite database | Enter your SQL commands to execute in sqlite3 |  Type 'exit' to close database")
+    res.send("Connected to the L33k3r database | Please enter a name of an Agent")
 })
 
 
 app.post('/command', async (req, res) => {
     console.log("Command post request complete")
     command = req.body.cmd
-    let c = command.split(";")
+ //   let c = command.split(";")
+ //   console.log(command);
     let result = []
     if (ifAdmin(username, password)) {
         if (command.toUpperCase().startsWith("SELECT")) {
 
-            for (let item of c) {
-                let data = await query(item)
+         //   for (let item of c) {
+                let data = await query(command)
                 result = result.concat(data)
-            }
-            console.log(result)
+	//	res.sent(result)
+        //    }
             res.send(result)
 
 
@@ -74,7 +75,6 @@ app.post('/command', async (req, res) => {
             console.log("Unsucessful Query")
             res.send("('An error occurred:', 'Invalid SQL Query, must enter valid SQL command')")
         }
-
     }
     else {
         console.log("Unsucessful Query, Not ADMIN")
